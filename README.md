@@ -181,7 +181,7 @@ The tm_asn lookup provides an IPv4 CIDR notation Autonomous System lookup.
 
 ### Configure thirdman
 
-Each organisation's expected patterns of user authentication behaviour are different. Organisations with strict policies around external access and working-hours (e.g. financial institutions), may choose to increase the alert's threshold and decrease the search period. On the other hand, organisations with users that naturally exhibit greater variability in their expected authentication patterns and long seasonal fluctuations (e.g. universities), may find reducing the alert's threshold and extending the searches' duration yields better results. The sensitivity of the alert can be modified by changing the unique_vectors predicate in the correlation searches' where statement. A unique_vectors threshold of >2 would be considered sensitive, >3 medium and >4 least sensitive.
+Each organisation's expected patterns of user authentication behaviour are different. Organisations with strict policies around external access and working-hours (e.g. financial institutions), may choose to decrease the alert's threshold and search period. On the other hand, organisations with users that naturally exhibit greater variability in their expected authentication patterns and long seasonal fluctuations (e.g. universities), may find increasing the alert's threshold and extending the searches' duration yields better results. The sensitivity of the alert can be modified by changing the unique_vectors predicate in the correlation searches' where statement. A unique_vectors threshold of >2 would be considered sensitive, >3 medium and >4 least sensitive.
 
 ### Troubleshoot thirdman
 
