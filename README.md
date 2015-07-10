@@ -1,6 +1,8 @@
 # thirdman
 Third Man Correlation Search for Splunk® Enterprise Security
 
+The thirdman detects misappropriated credentials using an abstract statistical fingerprint of users' successful auth behaviour.
+
 ——-
 
 ### OVERVIEW
@@ -35,8 +37,6 @@ Third Man Correlation Search for Splunk® Enterprise Security
 
 #### About the thirdman
 
-The thirdman detects misappropriated credentials using an abstract statistical fingerprint of users' successful auth behaviour.
-
 | Author | Doug Brown |
 | App Version | 0.0.1 |
 | Vendor Products | Splunk Enterprise Security 3.2.2 |
@@ -44,13 +44,13 @@ The thirdman detects misappropriated credentials using an abstract statistical f
 | Create an index | false |
 | Implements summarization | Creates events in 'notable' summary index |
 
-- Inspiration
+##### Inspiration
 
 The use of stolen credentials, via phishing or other means, is becoming one of the greatest challenges security professionals face. Based on the notion that people's behaviour form predictable patterns, I thought it must be possible to "profile" users' successful auth and therefore detect the use of misappropriated credentials. Like all good ideas, the mechanism of this correlation search came to me as I was trying to get to sleep one night and was consequently developed on the back of an envelope.
 
 Regarding the name of this entry: At the time of submission to this competition, I needed to quickly come up with a name to succinctly describe this correlation search, but "Stolen Credentials" or similar, struck me as too mundane. The Third Man (an obvious movie reference) sounds better, and initially was just an allusion to a bad actor. However, after more thought, if we consider the first man to be the administrator, the second man to be the user, and the third man to be the bad actor, I think this analogy works quite well.
 
-- How it works
+##### How it works
 
 This correlation search takes the CIM Authentication data model and enriches it with autonomous system information and an abstraction of time, then creates a statistical "fingerprint" of each users' behaviour in relation to what, when, where and how they successfully auth. A significant deviation from a user's pattern triggers the alert. Although this sounds relatively straightforward, importantly this correlation searches' ability to detect anomalous behaviour is derived from it's unique high-level abstraction of circumstances.
 
@@ -64,7 +64,7 @@ None.
 
 ##### About this release
 
-Version <0.0.1> of the thirdman is compatible with:
+Version 0.0.1 of the thirdman is compatible with:
 
 | Splunk Enterprise versions | 6.2+ |
 | CIM | 4.2 |
@@ -80,19 +80,19 @@ The thirdman includes the following new features:
 
 ##### Fixed issues
 
-Version <0.0.1> of the thirdman fixes the following issues:
+Version 0.0.1 of the thirdman fixes the following issues:
 
 - None
 
 ##### Known issues
 
-Version <0.0.1> of the thirdman has the following known issues:
+Version 0.0.1 of the thirdman has the following known issues:
 
 - May generate false-positives the first time a new user authenticates or if a user account has been dormant for the period the search is configured to run for; this will be addressed in the next release.
 
 ##### Third-party software attributions
 
-Version <0.0.1> of the thirdman incorporates the following third-party software or libraries.
+Version 0.0.1 of the thirdman incorporates the following third-party software or libraries.
 
 - None
 
@@ -125,7 +125,7 @@ To function properly, thirdman requires the following software:
 - Splunk Enterprise 6.2+
 - Splunk App for Enterprise Security 3.2.2+
 
-Although designed for Splunk Enterprise Security (ES) 3.2.2+ running on Splunk 6.2+, this app is likely to work with earlier versions of ES and can be used in the absence of ES, after some modification. The Common Information Model (CIM) app is the only strictly mandatory requirement. Naturally, your authentication sourcetypes need to mapped to the authentication datamodel and that datamodel should be accelerated for at least the period this corelation search is configured for.
+Although designed for Splunk Enterprise Security (ES) 3.2.2+ running on Splunk 6.2+, this app is likely to work with earlier versions of ES and can be used in the absence of ES, after some modification. The Common Information Model (CIM) app is the only strictly mandatory requirement. Naturally, your authentication sourcetypes' fields need to be mapped to the authentication datamodel and that datamodel should be accelerated for at least the period this corelation search is configured for.
 
 #### Splunk Enterprise system requirements
 
