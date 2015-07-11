@@ -1,0 +1,85 @@
+<form>
+  <label>Find the Third Man</label>
+  <fieldset submitButton="true">
+    <input type="time" token="calibration_period">
+      <label>Calibration Period</label>
+      <default>
+        <earliest>-30d@d</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="time" token="graph_period">
+      <label>Graph Period</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="text" token="user">
+      <label>User</label>
+      <default>*</default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <html>
+        <p>Before using this app, it's important to read the <a href="https://github.com/doksu/thirdman#thirdman" target="_blank">documentation</a> first.</p>
+        <p>The calibration period is used for baselining expected successful user authentication behaviour. Please set the calibration time to the longest period possible (within your Authentication datamodel's acceleration). The graph period is the period of time you're concerned about and must be <b>within</b> the calibration period. It's important not to interpret the output until the dashboard has completed. The higher the unique vectors count, the more likely stolen credentials has been used. Any event with a unique vector count <b>above</b> 2 should be investigated.</p>
+        <p>Please see the table for more detail about the events. The table is sorted in descending order by the unique vector count (ie. the most concerning events are at the top).</p>
+        <p>The dashboard can be configured to automatically refresh by adding: refresh="###" to the opening form tag with the number of seconds.</p>
+      </html>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <search>
+          <query>| `datamodel("Authentication","Successful_Authentication")` | `drop_dm_object_name("Authentication")` | search user=$user$ | lookup tm_asn ip as src_ip | eval period=case(date_hour&lt;5, 0, date_hour&lt;8, 1, date_hour&lt;12, 2, date_hour&lt;5, 3, date_hour&lt;8, 4, date_hour&lt;24, 5) | reverse | streamstats count as as_count by user, autonomous_system | streamstats count as period_count by user, period | streamstats count as wday_count by user, date_wday | streamstats count as app_count by user, app | streamstats count as dest_count by user, dest | eval unique_vectors=if(as_count=1,1,0)+if(period_count=1,1,0)+if(wday_count=1,1,0)+if(app_count=1,1,0)+if(dest_count=1,1,0) | eval e=if(isnum("$graph_period.earliest$"), "$graph_period.earliest$", relative_time(now(),"$graph_period.earliest$")) | eval l=if(isnum("$graph_period.latest$"), "$graph_period.latest$", if("$graph_period.latest$"=="now",now(),relative_time(now(),"$graph_period.latest$"))) | where unique_vectors&gt;0 AND _time&gt;=e AND _time&lt;=l  | table _time unique_vectors</query>
+          <earliest>$calibration_period.earliest$</earliest>
+          <latest>$calibration_period.latest$</latest>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">false</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">scatter</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">none</option>
+        <option name="charting.axisLabelsY.majorUnit">1</option>
+        <option name="charting.axisY.maximumNumber">6</option>
+        <option name="charting.axisY.minimumNumber">0</option>
+        <option name="charting.axisTitleY.text">Unique Vectors</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>| `datamodel("Authentication","Successful_Authentication")` | `drop_dm_object_name("Authentication")` | search user=$user$ | lookup tm_asn ip as src_ip | eval period=case(date_hour&lt;5, 0, date_hour&lt;8, 1, date_hour&lt;12, 2, date_hour&lt;5, 3, date_hour&lt;8, 4, date_hour&lt;24, 5) | reverse | streamstats count as as_count by user, autonomous_system | streamstats count as period_count by user, period | streamstats count as wday_count by user, date_wday | streamstats count as app_count by user, app | streamstats count as dest_count by user, dest | eval unique_vectors=if(as_count=1,1,0)+if(period_count=1,1,0)+if(wday_count=1,1,0)+if(app_count=1,1,0)+if(dest_count=1,1,0) | eval e=if(isnum("$graph_period.earliest$"), "$graph_period.earliest$", relative_time(now(),"$graph_period.earliest$")) | eval l=if(isnum("$graph_period.latest$"), "$graph_period.latest$", if("$graph_period.latest$"=="now",now(),relative_time(now(),"$graph_period.latest$"))) | where unique_vectors&gt;0 AND _time&gt;=e AND _time&lt;=l  | table _time user app src_ip dest autonomous_system as_count period_count wday_count app_count dest_count unique_vectors | sort 0 -unique_vectors -user</query>
+          <earliest>$calibration_period.earliest$</earliest>
+          <latest>$calibration_period.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="drilldown">row</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+</form>
