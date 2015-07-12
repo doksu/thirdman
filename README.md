@@ -152,6 +152,7 @@ To install and configure this app on your supported platform, follow these steps
 N.B. If the maximum size of static lookup files has not yet been increased from the default, you will need to do so by adding a stanza such as this to limits.conf:
 
 [lookup]
+
 max_memtable_bytes=200000000
 
 ##### Deploy to single server instance
@@ -181,7 +182,7 @@ None.
 
 The thirdman contains 1 lookup file.
 
-** tm_asn **
+**tm_asn**
 
 The tm_asn lookup provides an IPv4 CIDR notation Autonomous System lookup.
 
