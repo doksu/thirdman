@@ -1,7 +1,7 @@
 # thirdman
-Third Man Correlation Search for Splunk® Enterprise Security
+Third Man Correlation Search
 
-The thirdman detects misappropriated credentials using an abstract statistical fingerprint of users' successful auth behaviour.
+The thirdman correlation search detects misappropriated credentials using an abstract statistical fingerprint of users' successful auth behaviour.
 
 ——-
 
@@ -38,9 +38,10 @@ The thirdman detects misappropriated credentials using an abstract statistical f
 #### About the thirdman
 
 | Author | Doug Brown |
+| --- | --- |
 | App Version | 0.0.1 |
 | Vendor Products | Splunk Enterprise Security 3.2.2 |
-| Has index-time operations | true |
+| Has index-time operations | false |
 | Create an index | false |
 | Implements summarization | Creates events in 'notable' summary index |
 
@@ -67,6 +68,7 @@ None.
 Version 0.0.1 of the thirdman is compatible with:
 
 | Splunk Enterprise versions | 6.2+ |
+| --- | --- |
 | CIM | 4.2 |
 | Platforms | Platform independent |
 | Vendor Products | Splunk Enterprise Security 3.2.2 |
@@ -88,7 +90,7 @@ Version 0.0.1 of the thirdman fixes the following issues:
 
 Version 0.0.1 of the thirdman has the following known issues:
 
-- May generate false-positives the first time a new user authenticates or if a user account has been dormant for the period the search is configured to run for; this will be addressed in the next release.
+- None
 
 ##### Third-party software attributions
 
@@ -123,9 +125,13 @@ The thirdman correlation search is platform agnostic.
 To function properly, thirdman requires the following software:
 
 - Splunk Enterprise 6.2+
+- Splunk Common Information Model 4.2+
+
+The following are optional:
+
 - Splunk App for Enterprise Security 3.2.2+
 
-Although designed for Splunk Enterprise Security (ES) 3.2.2+ running on Splunk 6.2+, this app is likely to work with earlier versions of ES and can be used in the absence of ES, after some modification. The Common Information Model (CIM) app is the only strictly mandatory requirement. Naturally, your authentication sourcetypes' fields need to be mapped to the authentication datamodel and that datamodel should be accelerated for at least the period this corelation search is configured for.
+The correlation saved search is designed for the Splunk App for Enterprise Security (ES) 3.2.2+, however it can be modified to be used without ES, furthermore, the third man dashboard does not require ES. Naturally, your authentication sourcetypes' fields need to be mapped to the authentication datamodel and that datamodel should be accelerated for at least the period the search will be used for.
 
 #### Splunk Enterprise system requirements
 
@@ -139,10 +145,14 @@ The thirdman correlation search app is currently available here: https://github.
 
 To install and configure this app on your supported platform, follow these steps:
 
-1. Install this app on all search peers of ES (ie. indexing servers) as you would with any other app
 1. Install this app on the ES search head/s (see more details below) as you would with any other app
-1. Customise the correlation search as required in ES
-1. Enable correlation search
+2. Customise the correlation search as required
+3. Enable correlation search
+
+N.B. If the maximum size of static lookup files has not yet been increased from the default, you will need to do so by adding a stanza such as this to limits.conf:
+
+[lookup]
+max_memtable_bytes=200000000
 
 ##### Deploy to single server instance
 Steps are the same as above, however step two will be redundant.
@@ -181,7 +191,9 @@ The tm_asn lookup provides an IPv4 CIDR notation Autonomous System lookup.
 
 ### Configure thirdman
 
-Each organisation's expected patterns of user authentication behaviour are different. Organisations with strict policies around external access and working-hours (e.g. financial institutions), may choose to decrease the alert's threshold and search period. On the other hand, organisations with users that naturally exhibit greater variability in their expected authentication patterns and long seasonal fluctuations (e.g. universities), may find increasing the alert's threshold and extending the searches' duration yields better results. The sensitivity of the alert can be modified by changing the unique_vectors predicate in the correlation searches' where statement. A unique_vectors threshold of >2 would be considered sensitive, >3 medium and >4 least sensitive.
+Each organisation's expected patterns of user authentication behaviour are different. Organisations with strict policies around external access and working-hours (e.g. financial institutions), may choose to decrease the alert's threshold and search period. On the other hand, organisations with users that naturally exhibit greater variability in their expected authentication patterns and long seasonal fluctuations (e.g. universities), may find increasing the alert's threshold and extending the searches' duration yields better results. This app's dashboard can be used to determine the optimal search period and threshold for your organisation.
+
+The sensitivity of the alert can be modified by changing the unique_vectors predicate in the correlation searches' where statement. A unique_vectors threshold of >2 would be considered sensitive, >3 medium and >4 least sensitive.
 
 ### Troubleshoot thirdman
 
