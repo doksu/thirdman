@@ -39,11 +39,11 @@ The thirdman correlation search detects misappropriated credentials using an abs
 
 | Author | Doug Brown |
 | --- | --- |
-| App Version | 0.0.1 |
-| Vendor Products | Splunk Enterprise Security 3.2.2 |
+| App Version | 1.0.0 |
+| Vendor Products | Optional: Splunk Enterprise Security 3.2.2 |
 | Has index-time operations | false |
 | Create an index | false |
-| Implements summarization | Creates events in 'notable' summary index |
+| Implements summarization | ES correlation search creates events in 'notable' summary index |
 
 ##### Inspiration
 
@@ -65,42 +65,42 @@ None.
 
 ##### About this release
 
-Version 0.0.1 of the thirdman is compatible with:
+Version 1.0.0 of the thirdman is compatible with:
 
 | Splunk Enterprise versions | 6.2+ |
 | --- | --- |
 | CIM | 4.2 |
 | Platforms | Platform independent |
-| Vendor Products | Splunk Enterprise Security 3.2.2 |
-| Lookup file changes | Initial release of tm_asn lookup |
+| Vendor Products | Optional: Splunk Enterprise Security 3.2.2 |
+| Lookup file changes | None |
 
 ##### New features
 
 The thirdman includes the following new features:
 
-- Initial release
+- Added Third Man Alert Template for those without the Splunk app for Enterprise Security
 
 ##### Fixed issues
 
-Version 0.0.1 of the thirdman fixes the following issues:
+Version 1.0.0 of the thirdman fixes the following issues:
 
 - None
 
 ##### Known issues
 
-Version 0.0.1 of the thirdman has the following known issues:
+Version 1.0.0 of the thirdman has the following known issues:
 
-- None
+- It appears that 'import' directive in ES' metadata may need to be modified to include the 'thirdman' app for the correlation search to appear in the ES 'Custom Searches' GUI.
 
 ##### Third-party software attributions
 
-Version 0.0.1 of the thirdman incorporates the following third-party software or libraries.
+Version 1.0.0 of the thirdman incorporates the following third-party software or libraries.
 
 - None
 
 #### Performance benchmarks
 
-This app was developed using "The Audit Experiment" honeypot (https://github.com/doksu/splunk_auditd/wiki/The-Audit-Experiment).
+This app was developed using "The Audit Experiment" honeypot (https://github.com/doksu/splunk_auditd/wiki/The-Audit-Experiment). As with any app of this nature, it can require significant resources.
 
 ##### Support and resources
 
@@ -110,7 +110,7 @@ Please post questions to: answers.splunk.com
 
 **Support**
 
-This app is provided as is with no warranty, implied or otherwise. Feedback about possible improvements and good news stories of how this app has helped your organisation are most welcome.
+This app is provided as is with no warranty, implied or otherwise; please see the LICENSE document for more information. Feedback about possible improvements and good news stories of how this app has helped your organisation are most welcome.
 
 ## INSTALLATION AND CONFIGURATION
 
@@ -127,15 +127,17 @@ To function properly, thirdman requires the following software:
 - Splunk Enterprise 6.2+
 - Splunk Common Information Model 4.2+
 
+It is essential that your authentication sourcetypes' fields be mapped to the CIM's authentication datamodel and the datamodel should be accelerated before using this app.
+
 The following are optional:
 
 - Splunk App for Enterprise Security 3.2.2+
 
-The correlation saved search is designed for the Splunk App for Enterprise Security (ES) 3.2.2+, however it can be modified to be used without ES, furthermore, the third man dashboard does not require ES. Naturally, your authentication sourcetypes' fields need to be mapped to the authentication datamodel and that datamodel should be accelerated for at least the period the search will be used for.
+The correlation search (Access - Third Man Access Behaviour Detected - Rule), is designed for the Splunk App for Enterprise Security (ES) 3.2.2+.
 
 #### Splunk Enterprise system requirements
 
-The same system requirements of the Splunk App for Enterprise Security apply to the thirdman correlation search (http://docs.splunk.com/Documentation/ES/latest/Install).
+This app requires significant resources, but the exact requirements depend on a range of factors. The system requirements for the Splunk App for Enterprise Security can be used as a guide (http://docs.splunk.com/Documentation/ES/latest/Install).
 
 #### Download
 
@@ -143,23 +145,16 @@ The thirdman correlation search app is currently available here: https://github.
 
 #### Installation steps
 
-To install and configure this app on your supported platform, follow these steps:
+To install this app on your supported platform, follow these steps:
 
-1. Install this app on the ES search head/s (see more details below) as you would with any other app
-2. Customise the correlation search as required
-3. Enable correlation search
-
-N.B. If the maximum size of static lookup files has not yet been increased from the default, you will need to do so by adding a stanza such as this to limits.conf:
-
-[lookup]
-
-max_memtable_bytes=200000000
+1. Install this app on your search head/s (see more details below) as you would with any other app
+2. See instructions below for details on configuration
 
 ##### Deploy to single server instance
 Steps are the same as above, however step two will be redundant.
 
 ##### Deploy to distributed deployment with Search Head Pooling
-Search Head Pooling should not be used with ES and is deprecated by the vendor.
+Search Head Pooling is deprecated by the vendor.
 
 ##### Deploy to distributed deployment with Search Head Clustering
 In step two above, follow your normal app distribution practices using a search head cluster deployer server.
@@ -171,8 +166,7 @@ Please contact Splunk Support.
 
 ### Key concepts for thirdman
 
-This alert is predicated on the number of unique vectors a user has for a given successful authentication event, within the time period the correlation search is configure for. Unique vectors are: what the user logged into (dest), when they logged in (we use an abstraction of time - see search string), where they logged in from (not their IP address, but the name of the organisation that is responsible for the autonomous system governing their IP address) and lastly how they logged in (the app that was used, e.g. ssh). 
-
+Detection of third man events is predicated on the number of unique vectors a user has for a given successful authentication event, within a given time period. Unique vectors are: what the user logged into (dest), when they logged in (we use an abstraction of time - see search string), where they logged in from (not their IP address, but the name of the organisation that is responsible for the autonomous system governing their IP address) and lastly how they logged in (the app that was used, e.g. ssh). 
 
 ### Data types
 
@@ -192,9 +186,20 @@ The tm_asn lookup provides an IPv4 CIDR notation Autonomous System lookup.
 
 ### Configure thirdman
 
-Each organisation's expected patterns of user authentication behaviour are different. Organisations with strict policies around external access and working-hours (e.g. financial institutions), may choose to decrease the alert's threshold and search period. On the other hand, organisations with users that naturally exhibit greater variability in their expected authentication patterns and long seasonal fluctuations (e.g. universities), may find increasing the alert's threshold and extending the searches' duration yields better results. This app's dashboard can be used to determine the optimal search period and threshold for your organisation.
+The thirdman app does not require any configuration per se, however if you wish to use the provided real-time alert, calibration is required. Each organisation's expected patterns of user authentication behaviour are different. Organisations with strict policies around external access and working-hours (e.g. financial institutions), may choose to decrease the alert's threshold and search period. On the other hand, organisations with users that naturally exhibit greater variability in their expected authentication patterns and long seasonal fluctuations (e.g. universities), may find increasing the alert's threshold and extending the searches' duration yields better results. This app's dashboard can be used to determine the optimal search period and threshold for your organisation. The sensitivity of the alert can be modified by changing the unique_vectors predicate in the alert's where statement. A unique_vectors threshold of >2 would be considered normal, >3 low and >4 very low sensitivity.
 
-The sensitivity of the alert can be modified by changing the unique_vectors predicate in the correlation searches' where statement. A unique_vectors threshold of >2 would be considered sensitive, >3 medium and >4 least sensitive.
+To configure the third man alert:
+1. Use the 'Find the Third Man' dashboard to determine the optimal calibration for your alert (minimising false-positives)
+2.1. If you have ES, customise the correlation search ("Access - Third Man Access Behaviour Detected - Rule") and enable
+2.2. If you don't have ES, clone the "Third Man Alert Template" saved search and customise, as per your requirements
+
+To increase this app's efficacy, if your organisation has network "zones", it's recommended to replace the lookup's subnets your organisation uses with those zones. As a trivial example, if all your infrastructure were in 10.1.0.0/16, all client devices in 10.2.0.0/16 and all VPN clients in 10.3.0.0/16; remove the existing entry for 10.0.0.0/8 and replace it with those three entries. In this way, the autonomous system vector will have greater precision.
+
+N.B. If the maximum size of static lookup files has not yet been increased from the default in your environment, you will need to do so by adding a stanza such as this to limits.conf:
+
+[lookup]
+
+max_memtable_bytes=200000000
 
 ### Troubleshoot thirdman
 
@@ -206,4 +211,4 @@ The sensitivity of the alert can be modified by changing the unique_vectors pred
 
 ### Example Use Case ###
 
-This app is designed to integrate with the Splunk App for Enterprise Security to detect the use of stolen credentials.
+Simply install this app as you would any other, then use the 'Find the Third Man' dashboard to detect the historical use of misappropriated credentials. If you would like to be alerted of new third man events, see the alert configuration above.
