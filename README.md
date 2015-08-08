@@ -90,7 +90,7 @@ Version 1.0.0 of the thirdman fixes the following issues:
 
 Version 1.0.0 of the thirdman has the following known issues:
 
-- It appears that 'import' directive in ES' metadata may need to be modified to include the 'thirdman' app for the correlation search to appear in the ES 'Custom Searches' GUI.
+- It appears that the 'import' directive in ES' metadata may need to be modified to include the 'thirdman' app for the correlation search to appear in the ES 'Custom Searches' GUI.
 
 ##### Third-party software attributions
 
@@ -133,7 +133,7 @@ The following are optional:
 
 - Splunk App for Enterprise Security 3.2.2+
 
-The correlation search (Access - Third Man Access Behaviour Detected - Rule), is designed for the Splunk App for Enterprise Security (ES) 3.2.2+.
+The correlation search ("Access - Third Man Access Behaviour Detected - Rule"), is designed for the Splunk App for Enterprise Security (ES) 3.2.2+.
 
 #### Splunk Enterprise system requirements
 
@@ -151,13 +151,13 @@ To install this app on your supported platform, follow these steps:
 2. See instructions below for details on configuration
 
 ##### Deploy to single server instance
-Steps are the same as above, however step two will be redundant.
+Steps are the same as above.
 
 ##### Deploy to distributed deployment with Search Head Pooling
-Search Head Pooling is deprecated by the vendor.
+This app should work in a Search Head Pool, however it has been deprecated by the vendor.
 
 ##### Deploy to distributed deployment with Search Head Clustering
-In step two above, follow your normal app distribution practices using a search head cluster deployer server.
+Follow your normal app distribution practices using a search head cluster deployer server.
 
 ##### Deploy to Splunk Cloud
 Please contact Splunk Support.
@@ -186,9 +186,10 @@ The tm_asn lookup provides an IPv4 CIDR notation Autonomous System lookup.
 
 ### Configure thirdman
 
-The thirdman app does not require any configuration per se, however if you wish to use the provided real-time alert, calibration is required. Each organisation's expected patterns of user authentication behaviour are different. Organisations with strict policies around external access and working-hours (e.g. financial institutions), may choose to decrease the alert's threshold and search period. On the other hand, organisations with users that naturally exhibit greater variability in their expected authentication patterns and long seasonal fluctuations (e.g. universities), may find increasing the alert's threshold and extending the searches' duration yields better results. This app's dashboard can be used to determine the optimal search period and threshold for your organisation. The sensitivity of the alert can be modified by changing the unique_vectors predicate in the alert's where statement. A unique_vectors threshold of >2 would be considered normal, >3 low and >4 very low sensitivity.
+The thirdman app does not require any configuration per se, however if you wish to use the provided alert, calibration is required. Each organisation's expected patterns of user authentication behaviour are different. Organisations with strict policies around external access and working-hours (e.g. financial institutions), may choose to decrease the alert's threshold and search period. On the other hand, organisations with users that naturally exhibit greater variability in their expected authentication patterns and long seasonal fluctuations (e.g. universities), may find increasing the alert's threshold and extending the searches' duration yields better results. This app's dashboard can be used to determine the optimal search period and threshold for your organisation. The sensitivity of the alert can be modified by changing the unique_vectors predicate in the alert's where statement. A unique_vectors threshold of >2 would be considered normal, >3 low and >4 very low sensitivity.
 
 To configure the third man alert:
+
 1. Use the 'Find the Third Man' dashboard to determine the optimal calibration for your alert (minimising false-positives)
 2.1. If you have ES, customise the correlation search ("Access - Third Man Access Behaviour Detected - Rule") and enable
 2.2. If you don't have ES, clone the "Third Man Alert Template" saved search and customise, as per your requirements
