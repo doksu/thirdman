@@ -1,5 +1,5 @@
 []
-import = search,SA-ThreatIntelligence
+import = search,Splunk_SA_CIM,SA-ThreatIntelligence
 
 []
 access = read : [ * ], write : [ admin ]
