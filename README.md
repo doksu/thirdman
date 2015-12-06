@@ -39,7 +39,7 @@ The thirdman correlation search detects misappropriated credentials using an abs
 
 | Author | Doug Brown |
 | --- | --- |
-| App Version | 1.0.0 |
+| App Version | 2.0.0 |
 | Vendor Products | Optional: Splunk Enterprise Security 3.2.2 |
 | Has index-time operations | false |
 | Create an index | false |
@@ -65,7 +65,7 @@ None.
 
 ##### About this release
 
-Version 1.0.0 of the thirdman is compatible with:
+Version 2.0.0 of the thirdman is compatible with:
 
 | Splunk Enterprise versions | 6.2+ |
 | --- | --- |
@@ -76,11 +76,19 @@ Version 1.0.0 of the thirdman is compatible with:
 
 ##### New features
 
-The thirdman includes the following new features:
+Version 2.0.0 includes the following new features:
+
+- None
+
+Version 1.0.1 includes the following new features:
 
 - Added Third Man Alert Template for those without the Splunk app for Enterprise Security
 
 ##### Fixed issues
+
+Version 2.0.0 of the thirdman fixes the following issues:
+
+- metadata was problematic
 
 Version 1.0.0 of the thirdman fixes the following issues:
 
@@ -88,11 +96,19 @@ Version 1.0.0 of the thirdman fixes the following issues:
 
 ##### Known issues
 
+Version 2.0.0 of the thirdman has the following known issues:
+
+- None
+
 Version 1.0.0 of the thirdman has the following known issues:
 
 - It appears that the 'import' directive in ES' metadata may need to be modified to include the 'thirdman' app for the correlation search to appear in the ES 'Custom Searches' GUI.
 
 ##### Third-party software attributions
+
+Version 2.0.0 of the thirdman incorporates the following third-party software or libraries.
+
+- None
 
 Version 1.0.0 of the thirdman incorporates the following third-party software or libraries.
 
