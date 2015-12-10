@@ -1,0 +1,6 @@
+2015-07-10 21:55:00 user="alice" action="success" src="1.51.112.66" app="vpn" dest="unknown" comment="Third man login"
+2015-07-10 21:55:00 user="alice" action="success" src="10.201.5.3" app="oracle" dest="rac7" comment="Third man login"
+2015-07-10 21:55:00 user="alice" action="success" src="1.255.76.43" app="vpn" dest="unknown" comment="Third man login"
+2015-07-10 21:55:00 user="alice" action="success" src="10.201.5.3" app="webdav" dest="/projects" comment="Third man login"
+2015-07-10 21:55:00 user="alice" action="success" src="1.51.112.66" app="vpn" dest="unknown" comment="Third man login"
+2015-07-10 21:55:00 user="alice" action="success" src="1.2.3.77" app="sshd" dest="rac7-ilo" comment="Third man login"
