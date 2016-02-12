@@ -1,7 +1,0 @@
-2015-07-10 21:55:00 user="alice" action="success" src="1.2.3.77" app="kerberos" dest="PC-7394" comment="Logging into work desktop"
-2015-07-10 21:55:00 user="alice" action="success" src="1.2.3.77" app="sso" dest="intranet" comment="Logging into intranet from work desktop"
-2015-07-10 21:55:00 user="alice" action="success" src="1.2.3.77" app="sso" dest="payroll" comment="Logging into payroll from work desktop"
-2015-07-10 21:55:00 user="alice" action="success" src="1.2.3.77" app="imap" dest="unknown" comment="Logging into e-mail from work desktop"
-2015-07-10 21:55:00 user="alice" action="success" src="66.209.32.14" app="imap" dest="unknown" comment="Logging into e-mail on mobile device"
-2015-07-10 21:55:00 user="alice" action="success" src="66.209.32.14" app="imap" dest="unknown" comment="Logging into e-mail on mobile device"
-2015-07-10 21:55:00 user="alice" action="success" src="66.209.32.14" app="imap" dest="unknown" comment="Logging into e-mail on mobile device"
