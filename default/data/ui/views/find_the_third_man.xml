@@ -30,7 +30,7 @@
   <row>
     <panel>
       <html>
-        <p>It's important to read the <a href="https://github.com/doksu/thirdman#thirdman" target="_blank">documentation</a> before using this app.</p>
+        <p>It's important to read the <a href="https://github.com/doksu/thirdman/wiki" target="_blank">documentation</a> before using this app.</p>
         <p>The calibration period is used for baselining expected successful user authentication behaviour. Please set the calibration time to the longest period possible (from 1 to 12 months is recommended - within your Authentication datamodel's acceleration). The investigation period should be set to the period of time you're concerned about and must be <b>within</b> the calibration period.</p>
         <p>The table is sorted with the most concerning events at the top, however it's important not to interpret the results until the dashboard has completed loading. Any event with unique vectors <b>above</b> 2 may indicate the user's credentials have been stolen.</p>
       </html>
