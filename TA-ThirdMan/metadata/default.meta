@@ -1,0 +1,10 @@
+[]
+access = read : [ * ], write : [ admin, power ]
+export = system
+
+[correlationsearches]
+access = read : [ * ], write : [ * ]
+
+[governance]
+access = read : [ * ], write : [ * ]
+
